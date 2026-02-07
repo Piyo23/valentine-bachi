@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hello My Bachi 💘</title>
+
+<style>
+/* ===== BASE ===== */
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #ff758c, #ff7eb3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Segoe UI', sans-serif;
+  overflow: hidden;
+  transition: background 0.8s ease;
+}
+
+/* Romantic glow after YES */
+body.yes-mode {
+  background: radial-gradient(circle at center, #ff9bb5, #ff5c8a);
+}
+
+.card {
+  background: white;
+  padding: 28px;
+  width: 90%;
+  max-width: 360px;
+  border-radius: 25px;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+  position: relative;
+}
+
+/* Card bounce */
+.card.yes-bounce {
+  animation: cardBounce 0.5s ease;
+}
+
+@keyframes cardBounce {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* ===== QUESTION ===== */
+.question {
+  margin-bottom: 22px;
+}
+
+.question .main {
+  font-size: clamp(18px, 4vw, 20px);
+  font-weight: bold;
+  color: #ff4d6d;
+}
+
+.question .curse {
+  font-size: 13px;
+  color: #666;
+  margin-top: 6px;
+}
+
+/* ===== BUTTONS ===== */
+.buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.button-group {
+  display: flex;
+  gap: 14px;
+  position: relative;
+}
+
+button {
+  padding: 12px 22px;
+  font-size: 16px;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.yes {
+  background: #ff4d6d;
+  color: white;
+}
+
+/* Dramatic YES */
+.yes.dramatic {
+  animation: yesBoom 0.6s ease forwards;
+}
+
+@keyframes yesBoom {
+  0%   { transform: scale(1); box-shadow: 0 0 0 rgba(255,77,109,0); }
+  40%  { transform: scale(1.4); box-shadow: 0 0 30px rgba(255,77,109,0.9); }
+  100% { transform: scale(1.2); box-shadow: 0 0 50px rgba(255,77,109,1); }
+}
+
+.no {
+  background: #eee;
+}
+
+/* ===== SCHEDULE ===== */
+.content {
+  display: none;
+  margin-top: 14px;
+  text-align: left;
+  animation: fadeUp 0.8s ease;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.content h2 {
+  text-align: center;
+  color: #ff4d6d;
+  margin-bottom: 10px;
+}
+
+.step {
+  background: #fff0f5;
+  padding: 12px;
+  border-radius: 14px;
+  margin: 8px 0;
+  font-size: 14px;
+}
+
+.note {
+  text-align: center;
+  font-size: 13px;
+  margin-top: 16px;
+  color: #777;
+  font-style: italic;
+}
+
+/* ===== HEARTS ===== */
+.heart {
+  position: fixed;
+  font-size: 22px;
+  animation: floatUp 3s ease forwards;
+  pointer-events: none;
+}
+
+@keyframes floatUp {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-400px); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="card" id="card">
+
+  <!-- QUESTION -->
+  <div class="question" id="question">
+    <div class="main">Can I be your Valentine, bachi?</div>
+    <div class="curse">(ang mag “NO” ay mamalasin ngayong 2026 😌)</div>
+  </div>
+
+  <!-- BUTTONS -->
+  <div class="buttons" id="buttons">
+    <div class="button-group">
+      <button class="yes" id="yesBtn" onclick="accept()">Yes 💕</button>
+      <button class="no" id="noBtn">NO! 😈</button>
+    </div>
+  </div>
+
+  <!-- SCHEDULE -->
+  <div class="content" id="content">
+    <h2>What Are We Doing?</h2>
+    <div class="step">☀️ 10:00 AM — Meet you in Shang</div>
+    <div class="step">🍽️ Lunch — Half Saints BGC</div>
+    <div class="step">🍨 Extra dessert — Kariton Gelato ni Erwan</div>
+    <div class="step">🚗 Before 4:00 PM — Back to Ortigas</div>
+    <div class="step">🍷 Dinner</div>
+
+    <div class="note">
+      See you on February 16!<br>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const noBtn = document.getElementById('noBtn');
+const yesBtn = document.getElementById('yesBtn');
+const card = document.getElementById('card');
+
+noBtn.addEventListener('mouseover', runAway);
+noBtn.addEventListener('click', runAway);
+
+function runAway() {
+  const rect = noBtn.getBoundingClientRect();
+  noBtn.style.position = 'fixed';
+
+  const maxX = window.innerWidth - rect.width - 10;
+  const maxY = window.innerHeight - rect.height - 10;
+
+  noBtn.style.left = Math.random() * maxX + 'px';
+  noBtn.style.top  = Math.random() * maxY + 'px';
+}
+
+function accept() {
+  document.body.classList.add('yes-mode');
+  card.classList.add('yes-bounce');
+  yesBtn.classList.add('dramatic');
+  explodeHearts();
+
+  setTimeout(() => {
+    document.getElementById('question').style.display = 'none';
+    document.getElementById('buttons').style.display = 'none';
+    document.getElementById('content').style.display = 'block';
+  }, 600);
+}
+
+function explodeHearts() {
+  for (let i = 0; i < 18; i++) {
+    const heart = document.createElement('div');
+    heart.className = 'heart';
+    heart.innerHTML = '💖';
+    heart.style.left = Math.random() * 100 + 'vw';
+    heart.style.bottom = '0px';
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 3000);
+  }
+}
+</script>
+
+</body>
+</html>
