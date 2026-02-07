@@ -6,7 +6,6 @@
 <title>Hello My Bachi 💘</title>
 
 <style>
-/* ===== BASE ===== */
 body {
   margin: 0;
   min-height: 100vh;
@@ -19,7 +18,6 @@ body {
   transition: background 0.8s ease;
 }
 
-/* Romantic glow after YES */
 body.yes-mode {
   background: radial-gradient(circle at center, #ff9bb5, #ff5c8a);
 }
@@ -32,10 +30,8 @@ body.yes-mode {
   border-radius: 25px;
   text-align: center;
   box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-  position: relative;
 }
 
-/* Card bounce */
 .card.yes-bounce {
   animation: cardBounce 0.5s ease;
 }
@@ -46,13 +42,13 @@ body.yes-mode {
   100% { transform: scale(1); }
 }
 
-/* ===== QUESTION ===== */
+/* QUESTION */
 .question {
   margin-bottom: 22px;
 }
 
 .question .main {
-  font-size: clamp(18px, 4vw, 20px);
+  font-size: 20px;
   font-weight: bold;
   color: #ff4d6d;
 }
@@ -63,7 +59,7 @@ body.yes-mode {
   margin-top: 6px;
 }
 
-/* ===== BUTTONS ===== */
+/* BUTTONS */
 .buttons {
   display: flex;
   justify-content: center;
@@ -72,7 +68,6 @@ body.yes-mode {
 .button-group {
   display: flex;
   gap: 14px;
-  position: relative;
 }
 
 button {
@@ -81,7 +76,6 @@ button {
   border: none;
   border-radius: 14px;
   cursor: pointer;
-  transition: transform 0.2s ease;
 }
 
 .yes {
@@ -89,14 +83,13 @@ button {
   color: white;
 }
 
-/* Dramatic YES */
 .yes.dramatic {
   animation: yesBoom 0.6s ease forwards;
 }
 
 @keyframes yesBoom {
-  0%   { transform: scale(1); box-shadow: 0 0 0 rgba(255,77,109,0); }
-  40%  { transform: scale(1.4); box-shadow: 0 0 30px rgba(255,77,109,0.9); }
+  0% { transform: scale(1); }
+  40% { transform: scale(1.4); box-shadow: 0 0 30px rgba(255,77,109,0.9); }
   100% { transform: scale(1.2); box-shadow: 0 0 50px rgba(255,77,109,1); }
 }
 
@@ -104,7 +97,7 @@ button {
   background: #eee;
 }
 
-/* ===== SCHEDULE ===== */
+/* CONTENT */
 .content {
   display: none;
   margin-top: 14px;
@@ -120,7 +113,6 @@ button {
 .content h2 {
   text-align: center;
   color: #ff4d6d;
-  margin-bottom: 10px;
 }
 
 .step {
@@ -131,15 +123,45 @@ button {
   font-size: 14px;
 }
 
-.note {
+/* AFTER-SCHEDULE INTERACTIONS */
+.after {
+  margin-top: 18px;
   text-align: center;
-  font-size: 13px;
-  margin-top: 16px;
+}
+
+.reveal-btn {
+  background: #ffdde5;
+  border-radius: 14px;
+  padding: 10px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.personal {
+  display: none;
+  font-size: 14px;
+  margin-top: 12px;
+  line-height: 1.5;
+  animation: fadeUp 0.6s ease;
+}
+
+/* COUNTDOWN */
+.countdown {
+  margin-top: 14px;
+  font-size: 14px;
+  color: #ff4d6d;
+  font-weight: bold;
+}
+
+/* LOCK-IN */
+.lock-in {
+  margin-top: 20px;
+  font-size: 14px;
   color: #777;
   font-style: italic;
 }
 
-/* ===== HEARTS ===== */
+/* HEARTS */
 .heart {
   position: fixed;
   font-size: 22px;
@@ -160,7 +182,7 @@ button {
 
   <!-- QUESTION -->
   <div class="question" id="question">
-    <div class="main">Can I be your Valentine, bachi?</div>
+    <div class="main">Can I be your valentine, bachi?</div>
     <div class="curse">(ang mag “NO” ay mamalasin ngayong 2026 😌)</div>
   </div>
 
@@ -172,17 +194,33 @@ button {
     </div>
   </div>
 
-  <!-- SCHEDULE -->
+  <!-- SCHEDULE + ADD ONS -->
   <div class="content" id="content">
     <h2>What Are We Doing?</h2>
+
     <div class="step">☀️ 10:00 AM — Meet you in Shang</div>
     <div class="step">🍽️ Lunch — Half Saints BGC</div>
     <div class="step">🍨 Extra dessert — Kariton Gelato ni Erwan</div>
     <div class="step">🚗 Before 4:00 PM — Back to Ortigas</div>
     <div class="step">🍷 Dinner</div>
 
-    <div class="note">
-      See you on February 16!<br>
+    <!-- AFTER SCHEDULE -->
+    <div class="after">
+      <div class="reveal-btn" onclick="revealMessage()">
+        Tap to see something important hehe💕
+      </div>
+
+      <div class="personal" id="personalMsg">
+        <strong>Did you know? 💡</strong><br>
+        Our first official date was on <strong>7/4/23</strong>.<br>
+        (or official date ba ’un since wala ka choice haha!)
+      </div>
+
+      <div class="countdown" id="countdown"></div>
+
+      <div class="lock-in">
+        See you soon, valentine! 
+      </div>
     </div>
   </div>
 
@@ -204,7 +242,7 @@ function runAway() {
   const maxY = window.innerHeight - rect.height - 10;
 
   noBtn.style.left = Math.random() * maxX + 'px';
-  noBtn.style.top  = Math.random() * maxY + 'px';
+  noBtn.style.top = Math.random() * maxY + 'px';
 }
 
 function accept() {
@@ -217,11 +255,37 @@ function accept() {
     document.getElementById('question').style.display = 'none';
     document.getElementById('buttons').style.display = 'none';
     document.getElementById('content').style.display = 'block';
+    startCountdown();
   }, 600);
 }
 
+function revealMessage() {
+  document.getElementById('personalMsg').style.display = 'block';
+}
+
+function startCountdown() {
+  const target = new Date("2026-02-16T10:00:00").getTime();
+  const el = document.getElementById("countdown");
+
+  setInterval(() => {
+    const now = new Date().getTime();
+    const diff = target - now;
+
+    if (diff <= 0) {
+      el.innerHTML = "Today’s the day 💖";
+      return;
+    }
+
+    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const m = Math.floor((diff / (1000 * 60)) % 60);
+
+    el.innerHTML = `⏳ ${d} days • ${h} hours • ${m} minutes`;
+  }, 1000);
+}
+
 function explodeHearts() {
-  for (let i = 0; i < 18; i++) {
+  for (let i = 0; i < 16; i++) {
     const heart = document.createElement('div');
     heart.className = 'heart';
     heart.innerHTML = '💖';
